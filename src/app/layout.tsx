@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     "free tools",
   ],
   verification: {
-    google: "zgZ6kfdiCJaKCbzEjz3h5cVAaRPRJH-zIMgvFOCh6Fk",
+    google: "Cz2zRxPaak4rqPqji-v0dtj81RQCIfFcqwga4ZywETo",
   },
   openGraph: {
     type: "website",
