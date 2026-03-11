@@ -1,65 +1,97 @@
-import Image from "next/image";
+import Link from "next/link";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+
+const tools = [
+  {
+    name: "JSON Formatter & Validator",
+    description: "Format, validate, and minify JSON data instantly.",
+    href: "/tools/json-formatter",
+    icon: "{ }",
+    tags: ["Format", "Validate", "Minify"],
+  },
+  {
+    name: "Diff Checker",
+    description: "Compare two texts or code blocks side by side.",
+    href: "/tools/diff-checker",
+    icon: "<>",
+    tags: ["Compare", "Text", "Code"],
+  },
+  {
+    name: "JWT Decoder",
+    description: "Decode and inspect JSON Web Tokens securely.",
+    href: "/tools/jwt-decoder",
+    icon: "JWT",
+    tags: ["Decode", "Security", "Auth"],
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div className="space-y-8">
+      {/* Hero */}
+      <section className="text-center py-12 space-y-4">
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
+          Free Developer Tools
+        </h1>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          Fast, free, and private. All tools run{" "}
+          <span className="text-foreground font-semibold">
+            100% in your browser
+          </span>
+          . No data is ever sent to our servers.
+        </p>
+        <Badge variant="secondary" className="text-sm">
+          No sign-up required
+        </Badge>
+      </section>
+
+      {/* Tools Grid */}
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {tools.map((tool) => (
+          <Link key={tool.href} href={tool.href}>
+            <Card className="h-full hover:border-primary/50 transition-colors cursor-pointer group">
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-md bg-primary/10 flex items-center justify-center text-sm font-mono font-bold text-primary">
+                    {tool.icon}
+                  </div>
+                  <div className="flex-1">
+                    <CardTitle className="text-base group-hover:text-primary transition-colors">
+                      {tool.name}
+                    </CardTitle>
+                    <CardDescription className="mt-1">
+                      {tool.description}
+                    </CardDescription>
+                  </div>
+                </div>
+                <div className="flex gap-2 mt-3">
+                  {tool.tags.map((tag) => (
+                    <Badge key={tag} variant="outline" className="text-xs">
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+              </CardHeader>
+            </Card>
+          </Link>
+        ))}
+      </section>
+
+      {/* Privacy Banner */}
+      <section className="text-center py-8 border rounded-lg bg-card">
+        <h2 className="text-lg font-semibold mb-2">Your Privacy Matters</h2>
+        <p className="text-muted-foreground text-sm max-w-lg mx-auto">
+          We strictly do not store any of your data. Everything is processed
+          locally in your browser using JavaScript. No server-side processing, no
+          cookies, no tracking of your input data.
+        </p>
+      </section>
     </div>
   );
 }
