@@ -57,6 +57,62 @@ const tools = [
     icon: "#",
     tags: ["MD5", "SHA-256", "Hash"],
   },
+  {
+    name: "Tailwind CSS Converter",
+    description: "Convert between Tailwind CSS classes and vanilla CSS.",
+    href: "/tools/tailwind-converter",
+    icon: "TW",
+    tags: ["Tailwind", "CSS", "Convert"],
+  },
+  {
+    name: "Color Converter",
+    description: "Convert colors between HEX, RGB, HSL, and OKLCH.",
+    href: "/tools/color-converter",
+    icon: "CLR",
+    tags: ["HEX", "RGB", "OKLCH"],
+  },
+  {
+    name: "Cron Expression Generator",
+    description: "Build and decode cron expressions with a visual editor.",
+    href: "/tools/cron-generator",
+    icon: "*/5",
+    tags: ["Cron", "Schedule", "Generate"],
+  },
+  {
+    name: "SQL Formatter",
+    description: "Format and beautify SQL queries with proper indentation.",
+    href: "/tools/sql-formatter",
+    icon: "SQL",
+    tags: ["SQL", "Format", "Beautify"],
+  },
+  {
+    name: "Regex Tester",
+    description: "Test regular expressions with live match highlighting.",
+    href: "/tools/regex-tester",
+    icon: ".*",
+    tags: ["Regex", "Test", "Match"],
+  },
+  {
+    name: "Timestamp Converter",
+    description: "Convert between Unix timestamps and human-readable dates.",
+    href: "/tools/timestamp-converter",
+    icon: "T",
+    tags: ["Unix", "Date", "Time"],
+  },
+  {
+    name: "JSON to YAML",
+    description: "Convert between JSON and YAML formats instantly.",
+    href: "/tools/json-to-yaml",
+    icon: "Y/J",
+    tags: ["JSON", "YAML", "Convert"],
+  },
+  {
+    name: "Markdown Preview",
+    description: "Write Markdown and see live HTML preview side by side.",
+    href: "/tools/markdown-preview",
+    icon: "MD",
+    tags: ["Markdown", "Preview", "HTML"],
+  },
 ];
 
 export default function Home() {
