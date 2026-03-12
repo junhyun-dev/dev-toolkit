@@ -23,7 +23,7 @@ export default function ContactPage() {
           out via email:
         </p>
         <p className="text-foreground font-mono">
-          contact@devtoolkit.com
+          contact@devtoolkit.cc
         </p>
         <p>We typically respond within 1-2 business days.</p>
       </section>

@@ -125,7 +125,7 @@ export default function PrivacyPolicyPage() {
           <h2 className="text-lg font-semibold text-foreground">Contact</h2>
           <p>
             If you have any questions about this Privacy Policy, please
-            contact us at contact@devtoolkit.com.
+            contact us at contact@devtoolkit.cc.
           </p>
         </section>
       </div>

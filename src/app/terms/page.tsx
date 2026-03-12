@@ -92,7 +92,7 @@ export default function TermsPage() {
           <h2 className="text-lg font-semibold text-foreground">Contact</h2>
           <p>
             Questions about these Terms of Service? Contact us at
-            contact@devtoolkit.com.
+            contact@devtoolkit.cc.
           </p>
         </section>
       </div>
