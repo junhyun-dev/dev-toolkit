@@ -99,6 +99,9 @@ gtag('config', 'G-C3EYXY2XCX');`,
                 <Link href="/terms" className="hover:text-foreground">
                   Terms
                 </Link>
+                <a href="https://buymeacoffee.com/devtoolkit" target="_blank" rel="noopener noreferrer" className="hover:text-foreground">
+                  ☕ Buy me a coffee
+                </a>
               </div>
             </div>
           </div>

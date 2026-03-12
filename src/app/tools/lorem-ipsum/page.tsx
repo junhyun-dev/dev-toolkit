@@ -270,6 +270,17 @@ export default function LoremIpsumPage() {
           </TabsContent>
         </Tabs>
       </section>
+
+      {/* Support */}
+      <div className="mt-8 text-center py-6 border rounded-lg bg-card">
+        <p className="text-muted-foreground text-sm">
+          Enjoying this tool?{" "}
+          <a href="https://buymeacoffee.com/devtoolkit" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+            ☕ Buy me a coffee
+          </a>
+          {" "} to support free tools!
+        </p>
+      </div>
     </div>
   );
 }
