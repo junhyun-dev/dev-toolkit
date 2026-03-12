@@ -83,9 +83,9 @@ export default function NavDropdown() {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-2 w-[600px] bg-card border border-border rounded-lg shadow-xl p-4 z-50 grid grid-cols-2 gap-4">
+        <div className="absolute right-0 top-full mt-2 w-[600px] bg-card border border-border rounded-lg shadow-xl p-4 z-50 columns-2 gap-4">
           {categories.map((cat) => (
-            <div key={cat.label}>
+            <div key={cat.label} className="break-inside-avoid mb-3">
               <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
                 {cat.label}
               </h3>
