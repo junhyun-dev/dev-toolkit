@@ -56,6 +56,7 @@ function decodeJWT(token: string): DecodedJWT {
 }
 
 export default function JwtDecoderPage() {
+  const MAX_INPUT_LENGTH = 5 * 1024 * 1024;
   const [input, setInput] = useState("");
   const [decoded, setDecoded] = useState<DecodedJWT | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -146,7 +147,7 @@ export default function JwtDecoderPage() {
             placeholder="Paste your JWT token here (eyJhbGci...)"
             className="font-mono text-sm min-h-[120px] resize-none"
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => { if (e.target.value.length > MAX_INPUT_LENGTH) { alert("Input too large. Maximum size is 5MB."); return; } setInput(e.target.value); }}
           />
         </CardContent>
       </Card>

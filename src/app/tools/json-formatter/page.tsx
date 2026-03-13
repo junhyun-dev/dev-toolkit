@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function JsonFormatterPage() {
+  const MAX_INPUT_LENGTH = 5 * 1024 * 1024;
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -132,7 +133,7 @@ export default function JsonFormatterPage() {
               placeholder="Paste your JSON here..."
               className="font-mono text-sm min-h-[400px] resize-none"
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => { if (e.target.value.length > MAX_INPUT_LENGTH) { alert("Input too large. Maximum size is 5MB."); return; } setInput(e.target.value); }}
             />
           </CardContent>
         </Card>

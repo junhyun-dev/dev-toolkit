@@ -78,6 +78,7 @@ const SAMPLE_CSS = `/* Navigation styles */
 }`;
 
 export default function CssMinifierPage() {
+  const MAX_INPUT_LENGTH = 5 * 1024 * 1024;
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [copied, setCopied] = useState(false);
@@ -171,7 +172,7 @@ export default function CssMinifierPage() {
               placeholder="Paste your CSS here..."
               className="font-mono text-sm min-h-[400px] resize-none"
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => { if (e.target.value.length > MAX_INPUT_LENGTH) { alert("Input too large. Maximum size is 5MB."); return; } setInput(e.target.value); }}
             />
           </CardContent>
         </Card>

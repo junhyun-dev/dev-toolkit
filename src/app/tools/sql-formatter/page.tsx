@@ -460,6 +460,7 @@ VALUES (1, 'login', NOW());
 UPDATE users SET last_login = NOW(), login_count = login_count + 1 WHERE id = 42;`;
 
 export default function SqlFormatterPage() {
+  const MAX_INPUT_LENGTH = 5 * 1024 * 1024;
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -563,7 +564,7 @@ export default function SqlFormatterPage() {
               placeholder="Paste your SQL query here..."
               className="font-mono text-sm min-h-[300px] resize-none"
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => { if (e.target.value.length > MAX_INPUT_LENGTH) { alert("Input too large. Maximum size is 5MB."); return; } setInput(e.target.value); }}
             />
           </CardContent>
         </Card>

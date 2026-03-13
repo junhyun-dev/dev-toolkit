@@ -167,6 +167,7 @@ function TreeNode({ keyName, value, path, depth, onSelect, selectedPath }: TreeN
 }
 
 export default function JsonPathFinderPage() {
+  const MAX_INPUT_LENGTH = 5 * 1024 * 1024;
   const [input, setInput] = useState(SAMPLE_JSON);
   const [parsed, setParsed] = useState<JsonValue | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -284,7 +285,7 @@ export default function JsonPathFinderPage() {
             placeholder="Paste your JSON here..."
             className="font-mono text-sm min-h-[160px] resize-none"
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => { if (e.target.value.length > MAX_INPUT_LENGTH) { alert("Input too large. Maximum size is 5MB."); return; } setInput(e.target.value); }}
           />
         </CardContent>
       </Card>

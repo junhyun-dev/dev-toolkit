@@ -311,6 +311,7 @@ config:
   api: null`;
 
 export default function JsonToYamlPage() {
+  const MAX_INPUT_LENGTH = 5 * 1024 * 1024;
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -438,7 +439,7 @@ export default function JsonToYamlPage() {
               }
               className="font-mono text-sm min-h-[400px] resize-none"
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => { if (e.target.value.length > MAX_INPUT_LENGTH) { alert("Input too large. Maximum size is 5MB."); return; } setInput(e.target.value); }}
             />
           </CardContent>
         </Card>

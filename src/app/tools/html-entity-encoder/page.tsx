@@ -66,6 +66,7 @@ function decodeEntities(text: string): string {
 type Mode = "encode" | "decode";
 
 export default function HtmlEntityEncoderPage() {
+  const MAX_INPUT_LENGTH = 5 * 1024 * 1024;
   const [mode, setMode] = useState<Mode>("encode");
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
@@ -191,7 +192,7 @@ export default function HtmlEntityEncoderPage() {
               }
               className="font-mono text-sm min-h-[400px] resize-none"
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => { if (e.target.value.length > MAX_INPUT_LENGTH) { alert("Input too large. Maximum size is 5MB."); return; } setInput(e.target.value); }}
             />
           </CardContent>
         </Card>

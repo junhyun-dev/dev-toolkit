@@ -1,11 +1,14 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+const MAX_INPUT_LENGTH = 5 * 1024 * 1024; // 5MB
+const REGEX_TIMEOUT_MS = 2000;
 
 interface MatchResult {
   fullMatch: string;
@@ -36,6 +39,9 @@ export default function RegexTesterPage() {
   const [flagS, setFlagS] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [matches, setMatches] = useState<MatchResult[]>([]);
+  const workerRef = useRef<Worker | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const flags = useMemo(() => {
     let f = "";
@@ -46,33 +52,65 @@ export default function RegexTesterPage() {
     return f;
   }, [flagG, flagI, flagM, flagS]);
 
-  const matches: MatchResult[] = useMemo(() => {
+  // Run regex in Web Worker with timeout
+  useEffect(() => {
     if (!pattern.trim() || !testString) {
       setError(null);
-      return [];
+      setMatches([]);
+      return;
     }
+
+    // Validate regex syntax first (instant)
     try {
-      const re = new RegExp(pattern, flags.includes("g") ? flags : flags + "g");
-      setError(null);
-      const results: MatchResult[] = [];
-      let m;
-      while ((m = re.exec(testString)) !== null) {
-        results.push({
-          fullMatch: m[0],
-          groups: m.slice(1),
-          index: m.index,
-        });
-        if (!m[0]) re.lastIndex++;
-      }
-      return results;
+      new RegExp(pattern, flags);
     } catch (e) {
       setError((e as Error).message);
-      return [];
+      setMatches([]);
+      return;
     }
+
+    // Kill previous worker
+    if (workerRef.current) {
+      workerRef.current.terminate();
+    }
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    const worker = new Worker(
+      new URL("./regex-worker.ts", import.meta.url)
+    );
+    workerRef.current = worker;
+
+    worker.onmessage = (e) => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (e.data.type === "result") {
+        setError(null);
+        setMatches(e.data.results);
+      } else {
+        setError(e.data.message);
+        setMatches([]);
+      }
+      worker.terminate();
+    };
+
+    // Timeout protection against ReDoS
+    timeoutRef.current = setTimeout(() => {
+      worker.terminate();
+      setError("Regex execution timed out (possible ReDoS pattern). Try a simpler expression.");
+      setMatches([]);
+    }, REGEX_TIMEOUT_MS);
+
+    worker.postMessage({ pattern, flags, testString });
+
+    return () => {
+      worker.terminate();
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
   }, [pattern, testString, flags]);
 
   const highlightedHTML = useMemo(() => {
-    if (!pattern.trim() || !testString || error) return null;
+    if (!pattern.trim() || !testString || error || matches.length === 0) return null;
     try {
       const re = new RegExp(pattern, flags.includes("g") ? flags : flags + "g");
       let lastIndex = 0;
@@ -96,7 +134,7 @@ export default function RegexTesterPage() {
     } catch {
       return null;
     }
-  }, [pattern, testString, flags, error]);
+  }, [pattern, testString, flags, error, matches]);
 
   const copyMatches = useCallback(async () => {
     if (!matches.length) return;
@@ -128,6 +166,15 @@ export default function RegexTesterPage() {
     setPattern("");
     setTestString("");
     setError(null);
+    setMatches([]);
+  };
+
+  const handleTestStringChange = (val: string) => {
+    if (val.length > MAX_INPUT_LENGTH) {
+      alert("Input too large. Maximum size is 5MB.");
+      return;
+    }
+    setTestString(val);
   };
 
   return (
@@ -189,7 +236,7 @@ export default function RegexTesterPage() {
             ))}
           </div>
           {error && (
-            <div className="text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md p-2">
+            <div className="text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md p-2" aria-live="polite">
               Error: {error}
             </div>
           )}
@@ -221,7 +268,7 @@ export default function RegexTesterPage() {
               placeholder="Enter text to test against..."
               className="font-mono text-sm min-h-[300px] resize-none"
               value={testString}
-              onChange={(e) => setTestString(e.target.value)}
+              onChange={(e) => handleTestStringChange(e.target.value)}
             />
           </CardContent>
         </Card>

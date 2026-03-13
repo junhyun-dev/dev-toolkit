@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function DiffCheckerPage() {
+  const MAX_INPUT_LENGTH = 5 * 1024 * 1024;
   const [left, setLeft] = useState("");
   const [right, setRight] = useState("");
   const [result, setResult] = useState<Change[] | null>(null);
@@ -82,7 +83,7 @@ console.log(message);`);
               placeholder="Paste original text here..."
               className="font-mono text-sm min-h-[300px] resize-none"
               value={left}
-              onChange={(e) => setLeft(e.target.value)}
+              onChange={(e) => { if (e.target.value.length > MAX_INPUT_LENGTH) { alert("Input too large. Maximum size is 5MB."); return; } setLeft(e.target.value); }}
             />
           </CardContent>
         </Card>
@@ -96,7 +97,7 @@ console.log(message);`);
               placeholder="Paste modified text here..."
               className="font-mono text-sm min-h-[300px] resize-none"
               value={right}
-              onChange={(e) => setRight(e.target.value)}
+              onChange={(e) => { if (e.target.value.length > MAX_INPUT_LENGTH) { alert("Input too large. Maximum size is 5MB."); return; } setRight(e.target.value); }}
             />
           </CardContent>
         </Card>

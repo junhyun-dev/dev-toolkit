@@ -166,6 +166,7 @@ features:
 env: production`;
 
 export default function YamlValidatorPage() {
+  const MAX_INPUT_LENGTH = 5 * 1024 * 1024;
   const [input, setInput] = useState("");
   const [result, setResult] = useState<{ success: true; json: string } | { success: false; error: string; line?: number } | null>(null);
   const [copied, setCopied] = useState(false);
@@ -238,7 +239,7 @@ export default function YamlValidatorPage() {
             placeholder="Paste your YAML here..."
             className="font-mono text-sm min-h-[200px] resize-none"
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => { if (e.target.value.length > MAX_INPUT_LENGTH) { alert("Input too large. Maximum size is 5MB."); return; } setInput(e.target.value); }}
           />
         </CardContent>
       </Card>

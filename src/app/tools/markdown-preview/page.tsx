@@ -270,6 +270,7 @@ greet("World");
 *Built with a custom Markdown parser — no external libraries!*`;
 
 export default function MarkdownPreviewPage() {
+  const MAX_INPUT_LENGTH = 5 * 1024 * 1024;
   const [markdown, setMarkdown] = useState("");
   const [copiedHtml, setCopiedHtml] = useState(false);
 
@@ -339,7 +340,7 @@ export default function MarkdownPreviewPage() {
               placeholder="Type your Markdown here..."
               className="font-mono text-sm min-h-[500px] resize-none"
               value={markdown}
-              onChange={(e) => setMarkdown(e.target.value)}
+              onChange={(e) => { if (e.target.value.length > MAX_INPUT_LENGTH) { alert("Input too large. Maximum size is 5MB."); return; } setMarkdown(e.target.value); }}
             />
           </CardContent>
         </Card>
