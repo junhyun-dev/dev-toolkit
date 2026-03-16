@@ -226,7 +226,7 @@ export default function Home() {
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
           Free Developer Tools
         </h1>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+        <p className="text-lg text-muted-foreground mx-auto">
           Fast, free, and private. All tools run{" "}
           <span className="text-foreground font-semibold">
             100% in your browser
